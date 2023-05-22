@@ -13,7 +13,7 @@ namespace SnakeGame
     {
         static void Main(string[] args)
         {
-
+          
             
             bool finished = false;
             PlayerScoreDataAccess DataAccess = new PlayerScoreDataAccess(new SqliteDataAccess());
