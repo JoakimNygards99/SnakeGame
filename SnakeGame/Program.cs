@@ -11,7 +11,7 @@ namespace SnakeGame
 {
     class Program
     {
-        static void Main(string[] args)
+        static void Main(string[] args) //Start of game
         {
 
             
