@@ -44,6 +44,48 @@ namespace TestSnakeGame
             }
         }
 
+        [Fact]
+        public void TestSavePlayer()
+        {
+            using (var mock = AutoMock.GetLoose())
+            {
+                var player = GetFakePlayers()[0];
+                string sql = "insert into Player (Name, Score, Date) values (@Name, @Score, @Date)";
+
+                mock.Mock<ISqliteDataAccess>().Setup(x => x.SaveData(player, sql)).Returns("Success");
+
+                var test = mock.Create<PlayerScoreDataAccess>();
+
+                var expected = "Success";
+                var actual = test.SavePlayer(player);
+
+                //Kollar att den retunerar rätt värde
+                Assert.Equal(expected, actual);
+
+                mock.Mock<ISqliteDataAccess>().Verify(x => x.SaveData(player, sql), Times.Exactly(1));
+
+            }
+        }
+
+        [Fact]
+        public void TestCleanTable()
+        {
+            using (var mock = AutoMock.GetLoose())
+            {
+                string sql = "Delete from Player";
+                mock.Mock<ISqliteDataAccess>().Setup(x => x.CleanDatabase(sql)).Returns("Success");
+
+                var test = mock.Create<PlayerScoreDataAccess>();
+
+                var expected = "Success";
+                var actual = test.CleanTable();
+
+                Assert.Equal(expected, actual);
+
+                mock.Mock<ISqliteDataAccess>().Verify(x => x.CleanDatabase(sql), Times.Exactly(1));
+            }
+        }
+
         private List<PlayerScoreModel> GetFakePlayers()
         {
             var players = new List<PlayerScoreModel>
